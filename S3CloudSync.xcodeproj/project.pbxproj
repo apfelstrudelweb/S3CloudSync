@@ -1,0 +1,396 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1B9993622181AC750084ACF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993612181AC750084ACF3 /* AppDelegate.swift */; };
+		1B9993642181AC750084ACF3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993632181AC750084ACF3 /* ViewController.swift */; };
+		1B9993672181AC750084ACF3 /* S3CloudSync.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993652181AC750084ACF3 /* S3CloudSync.xcdatamodeld */; };
+		1B9993692181AC770084ACF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B9993682181AC770084ACF3 /* Assets.xcassets */; };
+		1B99936C2181AC770084ACF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B99936A2181AC770084ACF3 /* Main.storyboard */; };
+		1B9993772181AD7D0084ACF3 /* S3CMD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993762181AD7D0084ACF3 /* S3CMD.swift */; };
+		1B9993792181AE6D0084ACF3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993782181AE6D0084ACF3 /* Utils.swift */; };
+		1B99937B2181B6C60084ACF3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99937A2181B6C60084ACF3 /* Constants.swift */; };
+		1B9993992181C4E20084ACF3 /* JSONElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993982181C4E20084ACF3 /* JSONElement.swift */; };
+		1B99939B2181CA810084ACF3 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99939A2181CA810084ACF3 /* JSONHelper.swift */; };
+		1B99939E2181CE6B0084ACF3 /* Element+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99939C2181CE6B0084ACF3 /* Element+CoreDataClass.swift */; };
+		1B99939F2181CE6B0084ACF3 /* Element+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99939D2181CE6B0084ACF3 /* Element+CoreDataProperties.swift */; };
+		1B9993A12181CEEE0084ACF3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A02181CEEE0084ACF3 /* CoreDataManager.swift */; };
+		1B9993A32181D8C00084ACF3 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A22181D8C00084ACF3 /* FileHelper.swift */; };
+		1B9993A62181EDD10084ACF3 /* Asset+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A42181EDD10084ACF3 /* Asset+CoreDataClass.swift */; };
+		1B9993A72181EDD10084ACF3 /* Asset+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A52181EDD10084ACF3 /* Asset+CoreDataProperties.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1B99935E2181AC750084ACF3 /* S3CloudSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = S3CloudSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B9993612181AC750084ACF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1B9993632181AC750084ACF3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1B9993662181AC750084ACF3 /* S3CloudSync.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = S3CloudSync.xcdatamodel; sourceTree = "<group>"; };
+		1B9993682181AC770084ACF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1B99936B2181AC770084ACF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1B99936D2181AC770084ACF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B99936E2181AC770084ACF3 /* S3CloudSync.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = S3CloudSync.entitlements; sourceTree = "<group>"; };
+		1B9993762181AD7D0084ACF3 /* S3CMD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = S3CMD.swift; sourceTree = "<group>"; };
+		1B9993782181AE6D0084ACF3 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		1B99937A2181B6C60084ACF3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1B9993982181C4E20084ACF3 /* JSONElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONElement.swift; sourceTree = "<group>"; };
+		1B99939A2181CA810084ACF3 /* JSONHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
+		1B99939C2181CE6B0084ACF3 /* Element+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Element+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1B99939D2181CE6B0084ACF3 /* Element+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Element+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		1B9993A02181CEEE0084ACF3 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		1B9993A22181D8C00084ACF3 /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
+		1B9993A42181EDD10084ACF3 /* Asset+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Asset+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1B9993A52181EDD10084ACF3 /* Asset+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Asset+CoreDataProperties.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1B99935B2181AC750084ACF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1B9993552181AC750084ACF3 = {
+			isa = PBXGroup;
+			children = (
+				1B9993602181AC750084ACF3 /* S3CloudSync */,
+				1B99935F2181AC750084ACF3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1B99935F2181AC750084ACF3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1B99935E2181AC750084ACF3 /* S3CloudSync.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1B9993602181AC750084ACF3 /* S3CloudSync */ = {
+			isa = PBXGroup;
+			children = (
+				1B9993A42181EDD10084ACF3 /* Asset+CoreDataClass.swift */,
+				1B9993A52181EDD10084ACF3 /* Asset+CoreDataProperties.swift */,
+				1B99939C2181CE6B0084ACF3 /* Element+CoreDataClass.swift */,
+				1B99939D2181CE6B0084ACF3 /* Element+CoreDataProperties.swift */,
+				1B99937A2181B6C60084ACF3 /* Constants.swift */,
+				1B9993612181AC750084ACF3 /* AppDelegate.swift */,
+				1B9993632181AC750084ACF3 /* ViewController.swift */,
+				1B9993762181AD7D0084ACF3 /* S3CMD.swift */,
+				1B9993782181AE6D0084ACF3 /* Utils.swift */,
+				1B9993682181AC770084ACF3 /* Assets.xcassets */,
+				1B99936A2181AC770084ACF3 /* Main.storyboard */,
+				1B99936D2181AC770084ACF3 /* Info.plist */,
+				1B99936E2181AC770084ACF3 /* S3CloudSync.entitlements */,
+				1B9993652181AC750084ACF3 /* S3CloudSync.xcdatamodeld */,
+				1B9993982181C4E20084ACF3 /* JSONElement.swift */,
+				1B99939A2181CA810084ACF3 /* JSONHelper.swift */,
+				1B9993A02181CEEE0084ACF3 /* CoreDataManager.swift */,
+				1B9993A22181D8C00084ACF3 /* FileHelper.swift */,
+			);
+			path = S3CloudSync;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1B99935D2181AC750084ACF3 /* S3CloudSync */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B9993712181AC770084ACF3 /* Build configuration list for PBXNativeTarget "S3CloudSync" */;
+			buildPhases = (
+				1B99935A2181AC750084ACF3 /* Sources */,
+				1B99935B2181AC750084ACF3 /* Frameworks */,
+				1B99935C2181AC750084ACF3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = S3CloudSync;
+			productName = S3CloudSync;
+			productReference = 1B99935E2181AC750084ACF3 /* S3CloudSync.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1B9993562181AC750084ACF3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1000;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = "Ulrich Vormbrock";
+				TargetAttributes = {
+					1B99935D2181AC750084ACF3 = {
+						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 1B9993592181AC750084ACF3 /* Build configuration list for PBXProject "S3CloudSync" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1B9993552181AC750084ACF3;
+			productRefGroup = 1B99935F2181AC750084ACF3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1B99935D2181AC750084ACF3 /* S3CloudSync */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1B99935C2181AC750084ACF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B9993692181AC770084ACF3 /* Assets.xcassets in Resources */,
+				1B99936C2181AC770084ACF3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1B99935A2181AC750084ACF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B99939E2181CE6B0084ACF3 /* Element+CoreDataClass.swift in Sources */,
+				1B9993A62181EDD10084ACF3 /* Asset+CoreDataClass.swift in Sources */,
+				1B9993A72181EDD10084ACF3 /* Asset+CoreDataProperties.swift in Sources */,
+				1B9993672181AC750084ACF3 /* S3CloudSync.xcdatamodeld in Sources */,
+				1B9993642181AC750084ACF3 /* ViewController.swift in Sources */,
+				1B9993772181AD7D0084ACF3 /* S3CMD.swift in Sources */,
+				1B9993A32181D8C00084ACF3 /* FileHelper.swift in Sources */,
+				1B99939B2181CA810084ACF3 /* JSONHelper.swift in Sources */,
+				1B9993622181AC750084ACF3 /* AppDelegate.swift in Sources */,
+				1B9993A12181CEEE0084ACF3 /* CoreDataManager.swift in Sources */,
+				1B99937B2181B6C60084ACF3 /* Constants.swift in Sources */,
+				1B9993992181C4E20084ACF3 /* JSONElement.swift in Sources */,
+				1B99939F2181CE6B0084ACF3 /* Element+CoreDataProperties.swift in Sources */,
+				1B9993792181AE6D0084ACF3 /* Utils.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		1B99936A2181AC770084ACF3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1B99936B2181AC770084ACF3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1B99936F2181AC770084ACF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1B9993702181AC770084ACF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		1B9993722181AC770084ACF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = P2EQM7YAFH;
+				INFOPLIST_FILE = S3CloudSync/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ch.vormbrock.S3CloudSync;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		1B9993732181AC770084ACF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = P2EQM7YAFH;
+				INFOPLIST_FILE = S3CloudSync/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ch.vormbrock.S3CloudSync;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1B9993592181AC750084ACF3 /* Build configuration list for PBXProject "S3CloudSync" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B99936F2181AC770084ACF3 /* Debug */,
+				1B9993702181AC770084ACF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B9993712181AC770084ACF3 /* Build configuration list for PBXNativeTarget "S3CloudSync" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B9993722181AC770084ACF3 /* Debug */,
+				1B9993732181AC770084ACF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1B9993652181AC750084ACF3 /* S3CloudSync.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1B9993662181AC750084ACF3 /* S3CloudSync.xcdatamodel */,
+			);
+			currentVersion = 1B9993662181AC750084ACF3 /* S3CloudSync.xcdatamodel */;
+			path = S3CloudSync.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 1B9993562181AC750084ACF3 /* Project object */;
+}
