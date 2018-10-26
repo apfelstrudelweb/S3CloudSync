@@ -52,6 +52,10 @@ class CoreDataManager: NSObject {
                 assetMP4.type = AssetType.mp4.rawValue
                 assetPNG.type = AssetType.png.rawValue
                 assetSRT.type = AssetType.srt.rawValue
+                
+                assetMP4.hasLocalChanges = false
+                assetPNG.hasLocalChanges = false
+                assetSRT.hasLocalChanges = false
 
                 
                 elementCD?.alias = element.alias

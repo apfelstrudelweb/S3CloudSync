@@ -36,7 +36,7 @@ class JSONHelper: NSObject {
         completion()
     }
     
-    func updateJSON() {
+    func updateLocalAndRemoteJSON() {
         
         let allElements = CoreDataManager.sharedInstance.getAllRemoteElements()
         let mp4s = allElements.filter { $0.type == Int(AssetType.mp4.rawValue) }
