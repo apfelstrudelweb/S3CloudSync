@@ -707,15 +707,15 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="S3CloudSync" customModuleProvider="target" sceneMemberID="viewController">
                     <stackView key="view" distribution="fill" orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="kze-GU-GeN">
-                        <rect key="frame" x="0.0" y="0.0" width="1084" height="1058"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1084" height="1087"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6uT-0H-LfQ">
-                                <rect key="frame" x="458" y="930" width="169" height="128"/>
+                                <rect key="frame" x="458" y="959" width="169" height="128"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ObjectStorage" id="JO3-LJ-z6a"/>
                             </imageView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5uK-vU-VkW">
-                                <rect key="frame" x="524" y="905" width="37" height="17"/>
+                                <rect key="frame" x="524" y="934" width="37" height="17"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="GRX-Gx-VrQ">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -723,7 +723,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kGt-3U-Y15">
-                                <rect key="frame" x="524" y="880" width="37" height="17"/>
+                                <rect key="frame" x="524" y="909" width="37" height="17"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="d1o-AE-8tx">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -731,7 +731,7 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jK7-pw-wKy">
-                                <rect key="frame" x="458" y="822" width="169" height="50"/>
+                                <rect key="frame" x="458" y="851" width="169" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="9Kn-j9-r1P"/>
                                 </constraints>
@@ -739,6 +739,19 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="systemBold" size="22"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="uploadAllButtonTouched:" target="XfG-lQ-9wD" id="cXp-Hh-ZUP"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WQg-b4-9Fj">
+                                <rect key="frame" x="501" y="815" width="82" height="32"/>
+                                <buttonCell key="cell" type="push" title="Reload" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Lfi-Dn-gnE">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="reloadButtonTouched:" target="XfG-lQ-9wD" id="bkq-4b-Fm4"/>
+                                </connections>
                             </button>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="kaa-j2-m8u" userLabel="Table Container">
                                 <rect key="frame" x="50" y="30" width="1034" height="784"/>
@@ -991,8 +1004,10 @@
                             <integer value="1000"/>
                             <integer value="1000"/>
                             <integer value="1000"/>
+                            <integer value="1000"/>
                         </visibilityPriorities>
                         <customSpacing>
+                            <real value="3.4028234663852886e+38"/>
                             <real value="3.4028234663852886e+38"/>
                             <real value="3.4028234663852886e+38"/>
                             <real value="3.4028234663852886e+38"/>
@@ -1003,6 +1018,7 @@
                     </stackView>
                     <connections>
                         <outlet property="tableView" destination="2D6-gX-NUc" id="J6Q-KS-lsE"/>
+                        <outlet property="uploadAllButton" destination="jK7-pw-wKy" id="qcL-tj-ucJ"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

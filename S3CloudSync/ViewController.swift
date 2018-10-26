@@ -13,6 +13,8 @@ class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
     
     var fetchedResultsController: NSFetchedResultsController<Asset>!
     
+    
+    @IBOutlet weak var uploadAllButton: NSButton!
     @IBOutlet weak var tableView: NSTableView!
     let managedObjectContext = CoreDataManager.sharedInstance.managedObjectContext
     
@@ -20,28 +22,28 @@ class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
 
     var assetsToUploadDict = [String: String]()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.target = self
-        tableView.doubleAction = #selector(tableViewDoubleClick(_:))
-        
+    fileprivate func syncFileSystems() {
         //CoreDataManager.sharedInstance.clearDB()
         
         // TODO: perfom initial upload from JSON with inital sha256 values from locale filesystem -> maybe generate JSON automatically
         
         // get actual JSON from Cloud
         s3cmd.downloadRemoteJSON(to: Constants.localFilepath)
-
+        
         JSONHelper().mapJSONToCoreData {
             FileHelper().mapLocalFilesToCoreData()
         }
         
-        let updatedElements = CoreDataManager.sharedInstance.getAllUpdatedElements()
-        print("number of updated elements: \(updatedElements.count)")
+        do {
+            try fetchedResultsController.performFetch()
+            tableView.reloadData()
+        } catch {
+            print("An error occurred")
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         let fetchRequest = NSFetchRequest<Asset> (entityName: "Asset")
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "element.fileName", ascending: true), NSSortDescriptor (key: "type", ascending: true)]
@@ -52,22 +54,51 @@ class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
             cacheName: nil)
         self.fetchedResultsController.delegate = self
         
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.target = self
+        tableView.doubleAction = #selector(tableViewDoubleClick(_:))
+        
+        uploadAllButton.bezelStyle = .rounded
+        uploadAllButton.wantsLayer = true
+        uploadAllButton.layer?.backgroundColor = NSColor.green.cgColor
+        uploadAllButton.layer?.cornerRadius = 5.0
+        
+        syncFileSystems()
+        
+        //s3cmd.uploadAllLocalAssets()
+        
+        
+
+
+    }
+    
+    @IBAction func uploadAllButtonTouched(_ sender: Any) {
+        
+        let updatedElements = CoreDataManager.sharedInstance.getAllUpdatedElements()
+        print("number of updated elements: \(updatedElements.count)")
+        
+//        for element in updatedElements {
+//            s3cmd.uploadLocalAsset(element)
+//        }
+        
+        CoreDataManager.sharedInstance.syncAllRemoteSha256 {
+            JSONHelper().updateLocalAndRemoteJSON()
+        }
+        
+        syncFileSystems()
+
+    }
+    
+    @IBAction func reloadButtonTouched(_ sender: Any) {
         do {
+            FileHelper().mapLocalFilesToCoreData()
             try fetchedResultsController.performFetch()
             tableView.reloadData()
         } catch {
             print("An error occurred")
         }
-        
-//        for element in updatedElements {
-//            s3cmd.uploadLocalAsset(element)
-//        }
-//
-//        CoreDataManager.sharedInstance.syncAllRemoteSha256 {
-//            JSONHelper().updateLocalAndRemoteJSON()
-//        }
-        //s3cmd.uploadAllLocalAssets()
-
     }
     
     override var representedObject: Any? {
@@ -82,6 +113,7 @@ class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
         let asset = self.fetchedResultsController.object(at: IndexPath(item: tableView.selectedRow, section: 0))
         let url = URL(fileURLWithPath: asset.localeFilePath!)
         NSWorkspace.shared.open(url)
+   
     }
     
 }
@@ -150,10 +182,10 @@ extension ViewController: NSTableViewDelegate {
             text = dateFormatter.string(from: asset.modDate! as Date)
             cellIdentifier = CellIdentifiers.DateCell
         } else if tableColumn == tableView.tableColumns[3] {
-            text = asset.hasLocalChanges ? "yes" : "no"
+            text = asset.hasLocalChanges ? "yes" : ""
             cellIdentifier = CellIdentifiers.HasChangesCell
         } else if tableColumn == tableView.tableColumns[4] {
-            text = "upload"
+            text = ""
             cellIdentifier = CellIdentifiers.SingleUploadCell
         }
         
@@ -161,9 +193,22 @@ extension ViewController: NSTableViewDelegate {
             cell.textField?.stringValue = text
             cell.imageView?.image = image ?? nil
             
-            if cellIdentifier == CellIdentifiers.SingleUploadCell && asset.hasLocalChanges {
-                cell.wantsLayer = true
-                cell.layer?.backgroundColor = NSColor.green.cgColor
+            if cellIdentifier == CellIdentifiers.SingleUploadCell {
+                
+                if asset.hasLocalChanges {
+                    cell.wantsLayer = true
+                    cell.layer?.masksToBounds = true
+                    cell.layer?.cornerRadius = 5.0
+                    cell.layer?.backgroundColor = NSColor.green.cgColor
+                    text = "upload"
+                } else {
+                    cell.wantsLayer = false
+                    cell.layer?.masksToBounds = false
+                    cell.layer?.cornerRadius = 0.0
+                    cell.layer?.backgroundColor = NSColor.clear.cgColor
+                    text = ""
+                }
+           
             }
             
             return cell
