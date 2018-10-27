@@ -9,6 +9,7 @@
 import Cocoa
 import CommonCrypto
 
+
 public struct LocaleFileMetadata: CustomDebugStringConvertible, Equatable {
     
     let name: String
@@ -140,6 +141,12 @@ public struct LocalFiles  {
 }
 
 class FileHelper: NSObject {
+    
+    public enum FileOrder: String {
+        case Name
+        case Date
+        case Size
+    }
     
     func mapLocalFilesToCoreData() {
         let dir = LocalFiles(folderURL: URL(fileURLWithPath: "\(Constants.localFilepath)/"))

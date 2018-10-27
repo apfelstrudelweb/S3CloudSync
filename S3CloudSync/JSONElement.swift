@@ -49,7 +49,4 @@ class JSONElement: NSObject {
         self.sha256_png = sha256_png
         self.sha256_srt = sha256_srt
     }
-    
-    
-
 }

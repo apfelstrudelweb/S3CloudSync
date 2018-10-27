@@ -89,7 +89,7 @@ class JSONHelper: NSObject {
     
 }
 
-
+// it's a mixture of coredata and json -> maybe better creating two classes?
 class RemoteAsset {
     
     var alias: String?

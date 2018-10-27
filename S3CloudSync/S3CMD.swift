@@ -10,23 +10,63 @@ import Cocoa
 
 class S3CMD: NSObject {
     
+    var output: FileHandle!
+    var task: Process!
+    
     // in order to get this script working, disable Sandbox Capabilities in target!
     @discardableResult
     func execute(_ args: String) -> String {
+        
         var outstr = ""
-        let task = Process()
+        task = Process()
         task.launchPath = "/bin/sh"
         task.arguments = ["-c", args]
         let pipe = Pipe()
         task.standardOutput = pipe
+
+//        output = pipe.fileHandleForReading
+//
+//        NotificationCenter.default.addObserver(self, selector: #selector(notifiedForOutput(_:)), name: FileHandle.readCompletionNotification, object: output)
+//        NotificationCenter.default.addObserver(self, selector: #selector(notifiedForComplete(_:)), name: Process.didTerminateNotification, object: task)
+//        output.readInBackgroundAndNotify()
+        
+        
         task.launch()
+        print(task.processIdentifier)
+
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         if let output = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
             outstr = output as String
             print(outstr)
         }
         task.waitUntilExit()
+
         return outstr
+    }
+    
+    @objc func notifiedForComplete(_ notification:Notification) {
+        //task.suspend()
+    }
+    
+    @objc func notifiedForOutput(_ notification:Notification) {
+        
+        if let info = notification.userInfo as? Dictionary<String, Any> {
+            // Check if value present before using it
+            if let data = info[NSFileHandleNotificationDataItem] as? Data {
+                print(data.count)
+            }
+            else {
+                print("no value for key\n")
+            }
+        }
+        else {
+            print("wrong userInfo type")
+        }
+
+        if task.isRunning == true {
+            output.readInBackgroundAndNotify()
+        }
+
     }
     
     func downloadRemoteJSON(to localPath: String) {
