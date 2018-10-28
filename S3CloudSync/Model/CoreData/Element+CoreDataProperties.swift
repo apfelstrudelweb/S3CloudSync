@@ -12,6 +12,8 @@ import CoreData
 
 
 extension Element {
+    
+    private enum CodingKeys: String, CodingKey { case id, alias, fileName, sha256_mp4, sha256_png, sha256_srt }
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Element> {
         return NSFetchRequest<Element>(entityName: "Element")
@@ -40,4 +42,27 @@ extension Element {
     @objc(removeAssets:)
     @NSManaged public func removeFromAssets(_ values: NSSet)
 
+}
+
+
+extension Element: Encodable {
+
+    public func encode(to encoder: Encoder) throws {
+        
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(alias, forKey: .alias)
+        try container.encodeIfPresent(fileName, forKey: .fileName)
+        
+        try assets?.compactMap({ $0 as? Asset }).forEach {
+            if $0.type == AssetType.mp4.rawValue {
+                try container.encodeIfPresent($0.remote_sha256, forKey: .sha256_mp4)
+            } else if $0.type == AssetType.png.rawValue {
+                try container.encodeIfPresent($0.remote_sha256, forKey: .sha256_png)
+            } else if $0.type == AssetType.srt.rawValue {
+                try container.encodeIfPresent($0.remote_sha256, forKey: .sha256_srt)
+            }
+        }
+    }
+    
 }

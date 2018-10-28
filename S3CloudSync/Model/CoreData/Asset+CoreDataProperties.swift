@@ -11,8 +11,8 @@ import Foundation
 import CoreData
 
 
-extension Asset {
-
+extension Asset { //} : Encodable {
+    
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Asset> {
         return NSFetchRequest<Asset>(entityName: "Asset")
     }

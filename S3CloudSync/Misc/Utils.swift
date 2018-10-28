@@ -21,7 +21,6 @@ class Utils: NSObject {
         }
         return "application/octet-stream"
     }
-    
 }
 
 public extension URL {

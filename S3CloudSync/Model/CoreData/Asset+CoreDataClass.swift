@@ -12,5 +12,10 @@ import CoreData
 
 @objc(Asset)
 public class Asset: NSManagedObject {
+    
+    convenience init(type: Int16, context: NSManagedObjectContext) {
+        self.init(context: context)
+        self.type = type
+    }
 
 }

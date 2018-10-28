@@ -8,71 +8,21 @@
 
 import Cocoa
 
+enum CoreDataError: Error {
+    case FetchError
+}
+
 class CoreDataManager: NSObject {
     
     static let sharedInstance = CoreDataManager()
     static let entityElement = "Element"
     static let entityAsset = "Asset"
     
-    func insertOrUpdateElement(_ elements: ([JSONElement])) {
-        
-        for element in elements {
-            
-            guard let filename = element.fileName else { continue }
-            
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityElement)
-            fetchRequest.predicate = NSPredicate(format: "fileName == %@", filename)
-            
-            var elementCD: Element!
-            var assetMP4: Asset!
-            var assetPNG: Asset!
-            var assetSRT: Asset!
-            
-            do {
-                
-                if let fetchedElement = try (self.managedObjectContext.fetch(fetchRequest) as! [Element]).first {
-                    elementCD = fetchedElement
-                } else {
-                    elementCD = (NSEntityDescription.insertNewObject(forEntityName: CoreDataManager.entityElement, into: self.managedObjectContext) as! Element)
-                }
-                
-                if elementCD?.assets?.count ?? 0 == 0 {
-                    assetMP4 = (NSEntityDescription.insertNewObject(forEntityName: CoreDataManager.entityAsset, into: self.managedObjectContext) as! Asset)
-                    assetPNG = (NSEntityDescription.insertNewObject(forEntityName: CoreDataManager.entityAsset, into: self.managedObjectContext) as! Asset)
-                    assetSRT = (NSEntityDescription.insertNewObject(forEntityName: CoreDataManager.entityAsset, into: self.managedObjectContext) as! Asset)
-                    elementCD.addToAssets(assetMP4)
-                    elementCD.addToAssets(assetPNG)
-                    elementCD.addToAssets(assetSRT)
-                } else {
-                    assetMP4 = elementCD.assets?.first { ($0 as! Asset).type == AssetType.mp4.rawValue } as? Asset
-                    assetPNG = elementCD.assets?.first { ($0 as! Asset).type == AssetType.png.rawValue } as? Asset
-                    assetSRT = elementCD.assets?.first { ($0 as! Asset).type == AssetType.srt.rawValue } as? Asset
-                }
-                
-                assetMP4.type = AssetType.mp4.rawValue
-                assetPNG.type = AssetType.png.rawValue
-                assetSRT.type = AssetType.srt.rawValue
-                
-                assetMP4.hasLocalChanges = false
-                assetPNG.hasLocalChanges = false
-                assetSRT.hasLocalChanges = false
-
-                
-                elementCD?.alias = element.alias
-                elementCD?.id = Int64(element.id ?? -1)
-                elementCD?.fileName = element.fileName
-                elementCD?.hasLocalChanges = false // will be set later after parsing the local file system
-                
-                try self.managedObjectContext.save()
-                
-            } catch {
-                print("video \(filename) could not be fetched")
-            }
-        }
-    }
     
+    
+    // TODO: insert new files
     func updateElementWithLocaleData( _ metadata: LocaleFileMetadata) {
-
+        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityElement)
         fetchRequest.predicate = NSPredicate(format: "fileName == %@", metadata.name)
         
@@ -81,7 +31,7 @@ class CoreDataManager: NSObject {
             if let fetchedElement = try (self.managedObjectContext.fetch(fetchRequest) as! [Element]).first {
                 
                 var asset: Asset?
-                // TODO: don't forget to reset the flag "hasLocalChanges" before uploading the new JSON file
+   
                 if metadata.url.isMP4() {
                     asset = fetchedElement.assets?.first { ($0 as! Asset).type == AssetType.mp4.rawValue } as? Asset
                 } else if metadata.url.isPNG() {
@@ -161,26 +111,18 @@ class CoreDataManager: NSObject {
         return allElements
     }
     
-    func getAllRemoteElements() -> [RemoteAsset] {
-        
-        var allElements = [RemoteAsset]()
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityAsset)
+    func getAllRemoteElements() throws -> [Element]? {
+
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityElement)
         
         do {
-            if let fetchedAssets = try (self.managedObjectContext.fetch(fetchRequest) as? [Asset]) {
-                
-                for asset in fetchedAssets {
-                    
-                    let remoteAsset = RemoteAsset.init(asset: asset)
-                    allElements.append(remoteAsset!)
-                }
+            if let fetchedAssets = try (self.managedObjectContext.fetch(fetchRequest) as? [Element]) {
+                return fetchedAssets
             }
         } catch {
-            print("changed assets could not be fetched")
+            throw CoreDataError.FetchError
         }
-        
-        return allElements
+        return nil
     }
     
     func getLocalSha256FromFile(localeFilePath: String) -> String {

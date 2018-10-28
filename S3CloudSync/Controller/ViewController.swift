@@ -21,6 +21,12 @@ class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
     let s3cmd = S3CMD()
     
     var assetsToUploadDict = [String: String]()
+    
+    // TODO: get new files from the filesystem, add them to JSON and upload them into the cloud, too
+    // Also make a table column "new file"
+    // TODO: provide possibility to revert a local change: the changes are then overwritten by the original file from the cloud
+    // Make a table column "revert change"
+    // TODO: check also for consistency: each file group must contain a mp4, a png and a srt file
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,8 +60,8 @@ class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
         uploadAllButton.layer?.cornerRadius = 5.0
         
         syncFileSystems()
-        
-        //s3cmd.uploadAllLocalAssets()
+
+        //s3cmd.uploadAllLocalAssets() // only for testing the upload!
     }
     
     fileprivate func enableUploadAllButton(_ flag: Bool) {
@@ -65,7 +71,7 @@ class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
     
     fileprivate func syncFileSystems() {
         //CoreDataManager.sharedInstance.clearDB()
-        
+
         // TODO: perfom initial upload from JSON with inital sha256 values from locale filesystem -> maybe generate JSON automatically
         
         // get actual JSON from Cloud
@@ -172,7 +178,7 @@ extension ViewController: NSTableViewDelegate {
         static let NameCell = "nameCell"
         static let SizeCell = "sizeCell"
         static let DateCell = "dateCell"
-        static let HasChangesCell = "hasChangesCell"
+        static let IsNewFileCell = "isNewFileCell"
         static let SingleUploadCell = "singleUploadCell"
     }
     
@@ -206,8 +212,9 @@ extension ViewController: NSTableViewDelegate {
             text = dateFormatter.string(from: asset.modDate! as Date)
             cellIdentifier = CellIdentifiers.DateCell
         } else if tableColumn == tableView.tableColumns[3] {
-            text = asset.hasLocalChanges ? "yes" : ""
-            cellIdentifier = CellIdentifiers.HasChangesCell
+            // TODO: new attribute "isNew" for asset
+            text = "" //asset.hasLocalChanges ? "yes" : ""
+            cellIdentifier = CellIdentifiers.IsNewFileCell
         } else if tableColumn == tableView.tableColumns[4] {
             text = ""
             cellIdentifier = CellIdentifiers.SingleUploadCell
