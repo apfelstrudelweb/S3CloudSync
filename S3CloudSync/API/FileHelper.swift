@@ -122,7 +122,7 @@ public struct LocalFiles  {
                                                 size: (properties[URLResourceKey.fileSizeKey] as? NSNumber)?.int64Value ?? 0,
                                                 color: NSColor(), sha256: sha256 ?? "-- not available --")
                         
-                        CoreDataManager.sharedInstance.updateElementWithLocaleData(metadata)
+                        Element.generateFromFileSystem(metadata: metadata, inContext: PersistencyManager.shared.managedObjectContext)
                         
                         totalSize = totalSize + ((properties[URLResourceKey.fileSizeKey] as? NSNumber)?.int64Value)!
                         

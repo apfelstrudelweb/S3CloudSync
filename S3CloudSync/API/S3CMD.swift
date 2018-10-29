@@ -88,7 +88,7 @@ class S3CMD: NSObject {
     
     func uploadAllLocalAssets() {
         
-        let paths = CoreDataManager.sharedInstance.getAllLocaleElementPaths()
+        let paths = PersistencyManager.shared.getAllLocaleElementPaths()
         
         for path in paths {
             uploadLocalAsset(path)

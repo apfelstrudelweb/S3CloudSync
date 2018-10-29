@@ -12,70 +12,19 @@ enum CoreDataError: Error {
     case FetchError
 }
 
-class CoreDataManager: NSObject {
+final class PersistencyManager: NSObject {
     
-    static let sharedInstance = CoreDataManager()
-    static let entityElement = "Element"
-    static let entityAsset = "Asset"
+    static let shared = PersistencyManager()
+    static let predicateFileName = "fileName"
+    static let predicateLocalChanges = "hasLocalChanges"
     
-    
-    
-    // TODO: insert new files
-    func updateElementWithLocaleData( _ metadata: LocaleFileMetadata) {
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityElement)
-        fetchRequest.predicate = NSPredicate(format: "fileName == %@", metadata.name)
-        
-        do {
-            // only upddate elements which are already registered in JSON and thus in CoreData
-            if let fetchedElement = try (self.managedObjectContext.fetch(fetchRequest) as! [Element]).first {
-                
-                var asset: Asset?
-   
-                if metadata.url.isMP4() {
-                    asset = fetchedElement.assets?.first { ($0 as! Asset).type == AssetType.mp4.rawValue } as? Asset
-                } else if metadata.url.isPNG() {
-                    asset = fetchedElement.assets?.first { ($0 as! Asset).type == AssetType.png.rawValue } as? Asset
-                } else if metadata.url.isSRT() {
-                    asset = fetchedElement.assets?.first { ($0 as! Asset).type == AssetType.srt.rawValue } as? Asset
-                } else {
-                    return
-                }
-                
-                if metadata.url.path.contains("Seitbeugen.srt") {
-                    print(metadata.name)
-                }
-                
-                asset?.localeFilePath = metadata.url.path
-                asset?.local_sha256 =  metadata.sha256
-                
-                // for the first time - JSON does not contain sha256 values
-                if asset?.remote_sha256 == nil {
-                    asset?.remote_sha256 = metadata.sha256
-                }
-                asset?.size = metadata.size
-                asset?.modDate = metadata.date as NSDate
-                //asset?.hasLocalChanges = asset?.remote_sha256 != asset?.local_sha256
-                
-                if !(asset?.remote_sha256?.elementsEqual(metadata.sha256))! {
-                    //fetchedElement.hasLocalChanges = true
-                    asset?.hasLocalChanges = true
-                }
-            }
-
-            try self.managedObjectContext.save()
-
-        } catch {
-            print("video \(metadata.name) could not be fetched")
-        }
-    }
     
     func getAllUpdatedElements() -> [String] {
         
         var changedElements = [String]()
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityAsset)
-        fetchRequest.predicate = NSPredicate(format: "hasLocalChanges == 1")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Asset.className())
+        fetchRequest.predicate = NSPredicate(format: "\(PersistencyManager.predicateLocalChanges) == 1")
         
         do {
             if let fetchedAssets = try (self.managedObjectContext.fetch(fetchRequest) as? [Asset]) {
@@ -95,7 +44,7 @@ class CoreDataManager: NSObject {
         
         var allElements = [String]()
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityAsset)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Element.className())
         
         do {
             if let fetchedAssets = try (self.managedObjectContext.fetch(fetchRequest) as? [Asset]) {
@@ -113,7 +62,7 @@ class CoreDataManager: NSObject {
     
     func getAllRemoteElements() throws -> [Element]? {
 
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityElement)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Element.className())
         
         do {
             if let fetchedAssets = try (self.managedObjectContext.fetch(fetchRequest) as? [Element]) {
@@ -125,28 +74,11 @@ class CoreDataManager: NSObject {
         return nil
     }
     
-    func getLocalSha256FromFile(localeFilePath: String) -> String {
-        
-        var sha256: String! = ""
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityAsset)
-        fetchRequest.predicate = NSPredicate(format: "localeFilePath == %@", localeFilePath)
-        
-        do {
-            if let fetchedAsset = try (self.managedObjectContext.fetch(fetchRequest) as? [Asset])?.first {
-                sha256 = fetchedAsset.local_sha256
-            }
-        } catch {
-            print("changed assets could not be fetched")
-        }
-        
-        return sha256
-    }
     
     func syncAllRemoteSha256(completion: @escaping () -> ()) {
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityAsset)
-        fetchRequest.predicate = NSPredicate(format: "hasLocalChanges == 1")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Asset.className())
+        fetchRequest.predicate = NSPredicate(format: "\(PersistencyManager.predicateLocalChanges) == 1")
         
         do {
             if let fetchedAssets = try (self.managedObjectContext.fetch(fetchRequest) as? [Asset]) {
@@ -161,21 +93,6 @@ class CoreDataManager: NSObject {
             print("changed assets could not be fetched")
         }
         completion()
-    }
-    
-    func syncRemoteSha256FromFile(localeFilePath: String) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityAsset)
-        fetchRequest.predicate = NSPredicate(format: "localeFilePath == %@", localeFilePath)
-        
-        do {
-            if let fetchedAsset = try (self.managedObjectContext.fetch(fetchRequest) as? [Asset])?.first {
-                fetchedAsset.remote_sha256 = fetchedAsset.local_sha256
-                fetchedAsset.hasLocalChanges = false
-                try self.managedObjectContext.save()
-            }
-        } catch {
-            print("changed assets could not be fetched")
-        }
     }
     
     func saveContext () {
@@ -194,7 +111,7 @@ class CoreDataManager: NSObject {
     
     func clearDB() {
         
-        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityElement)
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Element.className())
         fetchRequest.returnsObjectsAsFaults = false
         do {
             let results = try managedObjectContext.fetch(fetchRequest)
@@ -207,7 +124,7 @@ class CoreDataManager: NSObject {
             print("Detele all data error :", error)
         }
         
-        fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataManager.entityAsset)
+        fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Asset.className())
         fetchRequest.returnsObjectsAsFaults = false
         do {
             let results = try managedObjectContext.fetch(fetchRequest)
@@ -221,8 +138,6 @@ class CoreDataManager: NSObject {
         }
     }
 
-    // MARK: - Core Data stack
-    
     // MARK: - Core Data stack
     lazy var applicationDocumentsDirectory: URL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "com.andrewcbancroft.Zootastic" in the application's documents Application Support directory.

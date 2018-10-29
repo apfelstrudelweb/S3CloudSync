@@ -16,7 +16,7 @@ extension Element {
     private enum CodingKeys: String, CodingKey { case id, alias, fileName, sha256_mp4, sha256_png, sha256_srt }
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Element> {
-        return NSFetchRequest<Element>(entityName: "Element")
+        return NSFetchRequest<Element>(entityName: self.className())
     }
 
     @NSManaged public var alias: String?

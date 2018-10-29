@@ -9,117 +9,115 @@
 import Cocoa
 
 
+
+/*
+ * Workflow - at startup:
+ *
+ * 1. Download remote JSON file -> overwrite local JSON (TODO: better we should compare timestamps)
+ * 2. Map local JSON to CoreData
+ * 3. Map local files (mp4, png and srt) to CoreData
+ * 4. Display assets from CoreData in Table View
+ *
+ * Workflow - after local file changes and tapping the "reload button":
+ *
+ * 1. Update local JSON - with new "sha 256" values
+ * 2. Map local JSON to CoreData -> local and remote "sha 256" are different
+ * 3. Display assets from CoreData in Table View and mark updated assets
+ * 4. Upload the updated assets
+ * 5. Upload the updated JSON with the new "sha 256" values according to the uploaded assets
+ *
+ * Workflow - after adding new files to the local filesystem and tapping the "reload button"
+ *
+ * 1. Check for consistency - there must be a group of mp4, png and srt file
+ * 2. Add new file group to JSON (fileName, id and sha 256 values) -> the user must add the remaining values by himself
+ * 3. Map local JSON to CoreData -> local and remote "sha 256" are the same, provide a flag "onServer = false"
+ * 4. Upload the updated assets
+ * 5. Upload the updated JSON
+ * 6. Update flag "onServer = true" in CoreData
+ *
+ *
+ */
 class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
     
-    var fetchedResultsController: NSFetchedResultsController<Asset>!
+    lazy var fetchedResultsController: NSFetchedResultsController<Asset> = {
+        
+        let fetchRequest = NSFetchRequest<Asset> (entityName: Asset.className())
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "element.fileName", ascending: true), NSSortDescriptor (key: "type", ascending: true)]
+        let fetchedResultsController = NSFetchedResultsController<Asset> (
+            fetchRequest: fetchRequest,
+            managedObjectContext: PersistencyManager.shared.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        }
+        catch {
+            print("fetch error \(error)")
+        }
+        
+        return fetchedResultsController
+    }()
     
     
     @IBOutlet weak var uploadAllButton: NSButton!
     @IBOutlet weak var tableView: NSTableView!
-    let managedObjectContext = CoreDataManager.sharedInstance.managedObjectContext
-    
-    let s3cmd = S3CMD()
-    
-    var assetsToUploadDict = [String: String]()
+
     
     // TODO: get new files from the filesystem, add them to JSON and upload them into the cloud, too
     // Also make a table column "new file"
     // TODO: provide possibility to revert a local change: the changes are then overwritten by the original file from the cloud
     // Make a table column "revert change"
     // TODO: check also for consistency: each file group must contain a mp4, a png and a srt file
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let fetchRequest = NSFetchRequest<Asset> (entityName: "Asset")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "element.fileName", ascending: true), NSSortDescriptor (key: "type", ascending: true)]
-        self.fetchedResultsController = NSFetchedResultsController<Asset> (
-            fetchRequest: fetchRequest,
-            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-        self.fetchedResultsController.delegate = self
+        
+        //PersistencyManager.shared.clearDB()
         
         tableView.delegate = self
         tableView.dataSource = self
-        
         tableView.target = self
         tableView.doubleAction = #selector(tableViewDoubleClick(_:))
         
-        let descriptorName = NSSortDescriptor(key: FileHelper.FileOrder.Name.rawValue, ascending: true)
-        let descriptorDate = NSSortDescriptor(key: FileHelper.FileOrder.Size.rawValue, ascending: true)
-        let descriptorSize = NSSortDescriptor(key: FileHelper.FileOrder.Date.rawValue, ascending: true)
+        configureSortDescriptors()
+        configureUploadAllButton()
         
-        tableView.tableColumns[0].sortDescriptorPrototype = descriptorName
-        tableView.tableColumns[1].sortDescriptorPrototype = descriptorDate
-        tableView.tableColumns[2].sortDescriptorPrototype = descriptorSize
+        LibraryAPI.shared.mapLocalFileSystemToCoreData()
+        LibraryAPI.shared.downloadJSON()
+        LibraryAPI.shared.mapJSONToCoreData()
         
-        uploadAllButton.bezelStyle = .rounded
-        uploadAllButton.wantsLayer = true
-        uploadAllButton.layer?.backgroundColor = NSColor.green.cgColor
-        uploadAllButton.layer?.cornerRadius = 5.0
-        
-        syncFileSystems()
-
-        //s3cmd.uploadAllLocalAssets() // only for testing the upload!
+        updateGUI()
     }
     
-    fileprivate func enableUploadAllButton(_ flag: Bool) {
-        uploadAllButton.isEnabled = flag
-        uploadAllButton.alphaValue = flag == true ? 1.0 : 0.5
-    }
-    
-    fileprivate func syncFileSystems() {
-        //CoreDataManager.sharedInstance.clearDB()
-
-        // TODO: perfom initial upload from JSON with inital sha256 values from locale filesystem -> maybe generate JSON automatically
-        
-        // get actual JSON from Cloud
-        s3cmd.downloadRemoteJSON(to: Constants.localFilepath)
-        
-        JSONHelper().mapJSONToCoreData {
-            FileHelper().mapLocalFilesToCoreData()
-        }
-        
+    fileprivate func updateGUI() {
         do {
             try fetchedResultsController.performFetch()
-            tableView.reloadData()
         } catch {
             print("An error occurred")
         }
         
-        let updatedElements = CoreDataManager.sharedInstance.getAllUpdatedElements()
-        enableUploadAllButton(updatedElements.count > 0)
+        tableView.reloadData()
+        enableUploadAllButton(LibraryAPI.shared.hasUpdatedAssets())
     }
     
     @IBAction func uploadAllButtonTouched(_ sender: Any) {
         
-        let updatedElements = CoreDataManager.sharedInstance.getAllUpdatedElements()
+        let updatedElements = PersistencyManager.shared.getAllUpdatedElements()
         print("number of updated elements: \(updatedElements.count)")
         
-        for element in updatedElements {
-           s3cmd.uploadLocalAsset(element)
+        LibraryAPI.shared.uploadAllUpdatedAssets()
+        
+        PersistencyManager.shared.syncAllRemoteSha256 {
+            JSONHelper().updateLocalJSON()
         }
         
-        CoreDataManager.sharedInstance.syncAllRemoteSha256 {
-            JSONHelper().updateLocalAndRemoteJSON()
-        }
-        
-        syncFileSystems()
-
+        //LibraryAPI.shared.updateCoreData()
     }
     
     @IBAction func reloadButtonTouched(_ sender: Any) {
-        do {
-            FileHelper().mapLocalFilesToCoreData()
-            try fetchedResultsController.performFetch()
-            tableView.reloadData()
-        } catch {
-            print("An error occurred")
-        }
-        
-        let updatedElements = CoreDataManager.sharedInstance.getAllUpdatedElements()
-        enableUploadAllButton(updatedElements.count > 0)
+        //LibraryAPI.shared.updateCoreData()
+        updateGUI()
     }
     
     override var representedObject: Any? {
@@ -129,12 +127,32 @@ class ViewController: NSViewController, NSFetchedResultsControllerDelegate {
     }
     
     @objc func tableViewDoubleClick(_ sender:AnyObject) {
-
+        
         let asset = self.fetchedResultsController.object(at: IndexPath(item: tableView.selectedRow, section: 0))
         let url = URL(fileURLWithPath: asset.localeFilePath!)
         NSWorkspace.shared.open(url)
     }
     
+    fileprivate func configureSortDescriptors() {
+        let descriptorName = NSSortDescriptor(key: FileHelper.FileOrder.Name.rawValue, ascending: true)
+        let descriptorDate = NSSortDescriptor(key: FileHelper.FileOrder.Size.rawValue, ascending: true)
+        let descriptorSize = NSSortDescriptor(key: FileHelper.FileOrder.Date.rawValue, ascending: true)
+        tableView.tableColumns[0].sortDescriptorPrototype = descriptorName
+        tableView.tableColumns[1].sortDescriptorPrototype = descriptorDate
+        tableView.tableColumns[2].sortDescriptorPrototype = descriptorSize
+    }
+    
+    fileprivate func enableUploadAllButton(_ flag: Bool) {
+        uploadAllButton.isEnabled = flag
+        uploadAllButton.alphaValue = flag == true ? 1.0 : 0.5
+    }
+    
+    fileprivate func configureUploadAllButton() {
+        uploadAllButton.bezelStyle = .rounded
+        uploadAllButton.wantsLayer = true
+        uploadAllButton.layer?.backgroundColor = NSColor.green.cgColor
+        uploadAllButton.layer?.cornerRadius = 5.0
+    }
 }
 
 extension ViewController: NSTableViewDataSource {
@@ -149,26 +167,18 @@ extension ViewController: NSTableViewDataSource {
         }
         
         if let order = FileHelper.FileOrder(rawValue: sortDescriptor.key!) {
-
-            do {
-                
-                if order == FileHelper.FileOrder.Name {
-                    self.fetchedResultsController.fetchRequest.sortDescriptors = [NSSortDescriptor (key: "element.fileName", ascending: !sortDescriptor.ascending), NSSortDescriptor (key: "type", ascending: true)]
-                } else if  order == FileHelper.FileOrder.Size {
-                    self.fetchedResultsController.fetchRequest.sortDescriptors = [NSSortDescriptor (key: "size", ascending: !sortDescriptor.ascending)]
-                } else if  order == FileHelper.FileOrder.Date {
-                    self.fetchedResultsController.fetchRequest.sortDescriptors = [NSSortDescriptor (key: "modDate", ascending: !sortDescriptor.ascending)]
-                }
-
-                //FileHelper().mapLocalFilesToCoreData() // get local changes
-                try fetchedResultsController.performFetch()
-                tableView.reloadData()
-            } catch {
-                print("An error occurred")
+            
+            if order == FileHelper.FileOrder.Name {
+                self.fetchedResultsController.fetchRequest.sortDescriptors = [NSSortDescriptor (key: "element.fileName", ascending: !sortDescriptor.ascending), NSSortDescriptor (key: "type", ascending: true)]
+            } else if  order == FileHelper.FileOrder.Size {
+                self.fetchedResultsController.fetchRequest.sortDescriptors = [NSSortDescriptor (key: "size", ascending: !sortDescriptor.ascending)]
+            } else if  order == FileHelper.FileOrder.Date {
+                self.fetchedResultsController.fetchRequest.sortDescriptors = [NSSortDescriptor (key: "modDate", ascending: !sortDescriptor.ascending)]
             }
+            
+            updateGUI()
         }
     }
-    
 }
 
 
@@ -192,7 +202,7 @@ extension ViewController: NSTableViewDelegate {
         dateFormatter.dateFormat = "yyyy-MM-dd - HH:mm"
         
         let asset = self.fetchedResultsController.object(at: IndexPath(item: row, section: 0))
-
+        
         if tableColumn == tableView.tableColumns[0] {
             
             if asset.type == 1 {
@@ -239,7 +249,7 @@ extension ViewController: NSTableViewDelegate {
                     cell.layer?.backgroundColor = NSColor.clear.cgColor
                     text = ""
                 }
-           
+                
             }
             
             return cell

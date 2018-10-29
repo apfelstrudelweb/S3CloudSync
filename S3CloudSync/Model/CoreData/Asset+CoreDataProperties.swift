@@ -14,7 +14,7 @@ import CoreData
 extension Asset { //} : Encodable {
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Asset> {
-        return NSFetchRequest<Asset>(entityName: "Asset")
+        return NSFetchRequest<Asset>(entityName: Asset.className())
     }
 
     @NSManaged public var type: Int16

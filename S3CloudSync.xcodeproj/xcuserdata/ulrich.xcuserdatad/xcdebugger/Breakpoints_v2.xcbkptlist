@@ -234,28 +234,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "S3CloudSync/API/JSONHelper.swift"
-            timestampString = "562443798.87608"
+            timestampString = "562537648.815941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "updateLocalAndRemoteJSON()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "S3CloudSync/Controller/ViewController.swift"
-            timestampString = "562443798.876152"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "syncFileSystems()"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "updateLocalJSON()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -266,12 +250,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "S3CloudSync/Model/CoreData/Element+CoreDataClass.swift"
-            timestampString = "562443798.8765481"
+            timestampString = "562537648.816034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "generateFromJsonDecodedModel(element:inContext:)"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "generateFromJson(element:inContext:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -282,12 +266,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "S3CloudSync/Model/CoreData/Element+CoreDataClass.swift"
-            timestampString = "562443798.876595"
+            timestampString = "562537648.816384"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "generateFromJsonDecodedModel(element:inContext:)"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "generateFromJson(element:inContext:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "S3CloudSync/Model/CoreData/Element+CoreDataClass.swift"
+            timestampString = "562537648.816623"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "generateFromJson(element:inContext:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

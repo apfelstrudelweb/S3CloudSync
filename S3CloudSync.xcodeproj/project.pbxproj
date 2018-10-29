@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B6456F62185CED2001F0CFD /* Codables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6456F52185CED2001F0CFD /* Codables.swift */; };
+		1B6456F821873CD6001F0CFD /* LibraryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6456F721873CD6001F0CFD /* LibraryAPI.swift */; };
 		1B9993622181AC750084ACF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993612181AC750084ACF3 /* AppDelegate.swift */; };
 		1B9993642181AC750084ACF3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993632181AC750084ACF3 /* ViewController.swift */; };
 		1B9993672181AC750084ACF3 /* S3CloudSync.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993652181AC750084ACF3 /* S3CloudSync.xcdatamodeld */; };
@@ -19,7 +20,7 @@
 		1B99939B2181CA810084ACF3 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99939A2181CA810084ACF3 /* JSONHelper.swift */; };
 		1B99939E2181CE6B0084ACF3 /* Element+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99939C2181CE6B0084ACF3 /* Element+CoreDataClass.swift */; };
 		1B99939F2181CE6B0084ACF3 /* Element+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99939D2181CE6B0084ACF3 /* Element+CoreDataProperties.swift */; };
-		1B9993A12181CEEE0084ACF3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A02181CEEE0084ACF3 /* CoreDataManager.swift */; };
+		1B9993A12181CEEE0084ACF3 /* PersistencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A02181CEEE0084ACF3 /* PersistencyManager.swift */; };
 		1B9993A32181D8C00084ACF3 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A22181D8C00084ACF3 /* FileHelper.swift */; };
 		1B9993A62181EDD10084ACF3 /* Asset+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A42181EDD10084ACF3 /* Asset+CoreDataClass.swift */; };
 		1B9993A72181EDD10084ACF3 /* Asset+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9993A52181EDD10084ACF3 /* Asset+CoreDataProperties.swift */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		1B6456F52185CED2001F0CFD /* Codables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Codables.swift; sourceTree = "<group>"; };
+		1B6456F721873CD6001F0CFD /* LibraryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryAPI.swift; sourceTree = "<group>"; };
 		1B99935E2181AC750084ACF3 /* S3CloudSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = S3CloudSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B9993612181AC750084ACF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B9993632181AC750084ACF3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -41,7 +43,7 @@
 		1B99939A2181CA810084ACF3 /* JSONHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		1B99939C2181CE6B0084ACF3 /* Element+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Element+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1B99939D2181CE6B0084ACF3 /* Element+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Element+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		1B9993A02181CEEE0084ACF3 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		1B9993A02181CEEE0084ACF3 /* PersistencyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistencyManager.swift; sourceTree = "<group>"; };
 		1B9993A22181D8C00084ACF3 /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		1B9993A42181EDD10084ACF3 /* Asset+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Asset+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1B9993A52181EDD10084ACF3 /* Asset+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Asset+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -80,8 +82,9 @@
 			children = (
 				1B9993762181AD7D0084ACF3 /* S3CMD.swift */,
 				1B99939A2181CA810084ACF3 /* JSONHelper.swift */,
-				1B9993A02181CEEE0084ACF3 /* CoreDataManager.swift */,
+				1B9993A02181CEEE0084ACF3 /* PersistencyManager.swift */,
 				1B9993A22181D8C00084ACF3 /* FileHelper.swift */,
+				1B6456F721873CD6001F0CFD /* LibraryAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -224,7 +227,8 @@
 				1B9993A32181D8C00084ACF3 /* FileHelper.swift in Sources */,
 				1B99939B2181CA810084ACF3 /* JSONHelper.swift in Sources */,
 				1B9993622181AC750084ACF3 /* AppDelegate.swift in Sources */,
-				1B9993A12181CEEE0084ACF3 /* CoreDataManager.swift in Sources */,
+				1B9993A12181CEEE0084ACF3 /* PersistencyManager.swift in Sources */,
+				1B6456F821873CD6001F0CFD /* LibraryAPI.swift in Sources */,
 				1B99937B2181B6C60084ACF3 /* Constants.swift in Sources */,
 				1B99939F2181CE6B0084ACF3 /* Element+CoreDataProperties.swift in Sources */,
 				1B9993792181AE6D0084ACF3 /* Utils.swift in Sources */,

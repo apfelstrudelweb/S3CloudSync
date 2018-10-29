@@ -13,26 +13,24 @@ class JSONHelper: NSObject {
     
     let jsonPath = "\(Constants.localFilepath)/\(Constants.jsonFilename)"
     
-    func mapJSONToCoreData(completion: @escaping () -> ())  {
+    func mapJSONToCoreData()  {
 
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: jsonPath), options: .mappedIfSafe)
             let json = try Array<ElementDecodable>.decode(data: data)
             _ = json.compactMap {
-                Element.generateFromJsonDecodedModel(element: $0, inContext: CoreDataManager.sharedInstance.managedObjectContext)
+                Element.generateFromJson(element: $0, inContext: PersistencyManager.shared.managedObjectContext)
             }
  
         } catch {
             print(error)
         }
-
-        completion()
     }
     
-    func updateLocalAndRemoteJSON() {
+    func updateLocalJSON() {
         
         do {
-            let records = try CoreDataManager.sharedInstance.getAllRemoteElements()
+            let records = try PersistencyManager.shared.getAllRemoteElements()
             
             // Swift 4 has the advantage of the Encodable protocol
             let encoder = JSONEncoder()
@@ -43,7 +41,7 @@ class JSONHelper: NSObject {
             try jsonData.write(to: URL(fileURLWithPath: self.jsonPath), options: [])
             
             print("JSON data was written to the local file successfully!")
-            S3CMD().uploadLocalJSON()
+            //S3CMD().uploadLocalJSON()
             
         } catch {
             print(error)
